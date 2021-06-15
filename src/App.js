@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Expenses from './components/expenses/Expenses';
+import NewExpense from './components/expense-form/NewExpense';
 
 const App = () => {
   const expenses = [
@@ -30,11 +31,18 @@ const App = () => {
     },
   ];
 
+  const addExpenseHandler = expense => {
+    console.log('In App.js');
+    console.log(expense);
+  };
+
   return (
     //Assignment 1
     // Create the component Expenses
     // Pass the array expenses to Expenses component by using expenses props
     <div>
+      {/* use on to make it clear that it's a function pointer */}
+      <NewExpense onAddExpense={addExpenseHandler} />
       <Expenses items={expenses}/>
     </div>
   );

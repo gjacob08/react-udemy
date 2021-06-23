@@ -1,27 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import ExpenseForm from './ExpenseForm';
 import '../css/NewExpense.css';
 
 const NewExpense = (props) => {
-
-  //call saveExpenseDataHandler function and pass enteredExpenseData as parameter 
+  //call saveExpenseDataHandler function and pass enteredExpenseData as parameter
   //to make sure ExpenseForm child component can communicate to parent component
-  const saveExpenseDataHandler= (enteredExpenseData) => {
+  const saveExpenseDataHandler = (enteredExpenseData) => {
     const expenseData = {
       ...enteredExpenseData,
-      id: Math.random().toString()
+      id: Math.random().toString(),
     };
 
     props.onAddExpense(expenseData);
+    setIsEditing(false);
   };
 
-  return(
-    <div className="new-expense">
+  const [isEditing, setIsEditing] = useState(false);
+
+  const startEditingHandler = () => {
+    setIsEditing(true);
+  };
+
+  const stopEditingHandler = () => {
+    setIsEditing(false);
+  };
+
+  return (
+    <div className='new-expense'>
       {/* use on for naming convention if it's a function expecting an event */}
-      <ExpenseForm onSaveExpenseData={saveExpenseDataHandler} />
+      {!isEditing && (
+        <button onClick={startEditingHandler}>Add New Expense</button>
+      )}
+      {isEditing && (
+        <ExpenseForm
+          onSaveExpenseData={saveExpenseDataHandler}
+          onCancel={stopEditingHandler}
+        />
+      )}
     </div>
   );
 };
 
-export default NewExpense
+export default NewExpense;

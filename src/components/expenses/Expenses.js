@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
 import '../css/Expenses.css';
-import ExpenseItem from './ExpenseItem';
 import ExpenseFilter from '../expense-filter/ExpenseFilter';
+import ExpensesList from './ExpensesList';
+import ExpensesChart from './ExpensesChart';
+
 import Card from '../layout/Card';
 
 const Expenses = (props) => {
@@ -12,6 +14,11 @@ const Expenses = (props) => {
     setFilteredYear(selectedYear);
     console.log(selectedYear);
   };
+
+  const filteredExpenses = props.items.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
+
   return (
     <div>
       <Card className='expenses'>
@@ -23,19 +30,29 @@ const Expenses = (props) => {
             stateless- no state management, use only for presenting data
          */}
         <ExpenseFilter
-          initialYear={filteredYear}
+          selected={filteredExpenses}
           onChangeFilter={filterChangeHandler}
         />
-        <ExpenseItem
+        <ExpensesChart expenses={filteredExpenses} />
+        <ExpensesList items={filteredExpenses}/>
+        {/* Instead of doing the one below, we put the logic above (has been moved to ExpensesList.js) */}
+        {/* Other approach is use ternary expression to check if there's no data */}
+        {/* {filteredExpenses.length === 0 && <p>No expenses found.</p>}
+        {filteredExpenses.length > 0 &&
+          filteredExpenses.map((expense) => (
+            <ExpenseItem
+              // Add key prop to add a unique id for each array
+              key={expense.id}
+              title={expense.title}
+              amount={expense.amount}
+              date={expense.date}
+            />
+          ))} */}
+        {/* <ExpenseItem
           title={props.items[0].title}
           amount={props.items[0].amount}
           date={props.items[0].date}
-        />
-        <ExpenseItem
-          title={props.items[1].title}
-          amount={props.items[1].amount}
-          date={props.items[1].date}
-        />
+        /> */}
       </Card>
     </div>
   );
